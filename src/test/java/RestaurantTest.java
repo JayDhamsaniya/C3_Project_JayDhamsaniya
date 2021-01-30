@@ -63,4 +63,28 @@ class RestaurantTest {
                 () -> restaurant.removeFromMenu("French fries"));
     }
     //<<<<<<<<<<<<<<<<<<<<<<<MENU>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    @Test
+    public void default_order_value_should_be_zero() {
+        assertEquals(0, restaurant.calculatingOrderValue());
+    }
+
+    @Test
+    public void adding_item_to_order_should_increase_order_value_by_item_price() {
+        int orderValueBeforeAddingItemToOrder = restaurant.calculatingOrderValue();
+        restaurant.addItemToOrder("Sweet corn soup");
+        int orderValueAfterAddingItemToOrder = orderValueBeforeAddingItemToOrder + restaurant.findItemByName("Sweet corn soup").getPrice();
+        assertEquals(orderValueAfterAddingItemToOrder, restaurant.calculatingOrderValue());
+    }
+
+    @Test
+    public void removing_already_exist_item_to_order_should_decrease_order_value_by_item_price() {
+        restaurant.addItemToOrder("Sweet corn soup");
+        restaurant.addItemToOrder("Vegetable lasagne");
+
+        int orderValueBeforeRemovingItemFromOrder = restaurant.calculatingOrderValue();
+        restaurant.removeItemFromOrder("Sweet corn soup");
+        int orderValueAfterRemovingItemFromOrder = orderValueBeforeRemovingItemFromOrder - restaurant.findItemByName("Sweet corn soup").getPrice();
+        assertEquals(orderValueAfterRemovingItemFromOrder, restaurant.calculatingOrderValue());
+    }
 }
